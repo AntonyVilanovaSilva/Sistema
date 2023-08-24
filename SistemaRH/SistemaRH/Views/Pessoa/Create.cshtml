@@ -1,0 +1,151 @@
+﻿@model SistemaRH.Models.Pessoa
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Pessoa</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DataNascimento, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DataNascimento, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DataNascimento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TipoBancario, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    <select id="TipoBancario" onchange="desabilitarCampos(this)">
+                        <option value="-1"></option>
+                        <option value="0">Conta Bancaria</option>
+                        <option value="1">Pix</option>
+
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="infos" style="display: none;">
+
+            <div id="conta">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Agencia, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input id="Agencia" type="text" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Conta, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <input id="conta" type="text" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TipoConta, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <select id="TipoConta">
+                            <option value="-1"></option>
+                            <option value="CC">Conta Corrente</option>
+                            <option value="CP">Conta Poupança</option>
+
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="pix">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ChavePix, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ChavePix, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ChavePix, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+       
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input value="Create" class="btn btn-default" onclick="check()" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    function desabilitarCampos(obj) {
+        console.log("Mudou" + obj.value);
+
+        if (obj.value == 0) {
+            document.getElementById('infos').style.display = 'block'
+            document.getElementById('conta').style.display = 'block'
+            document.getElementById('pix').style.display = 'none'
+
+
+        } else if (obj.value == 1) {
+            document.getElementById('infos').style.display = 'block'
+            document.getElementById('conta').style.display = 'none'
+            document.getElementById('pix').style.display = 'block'
+
+        } else if (obj.value == -1) {
+            document.getElementById('infos').style.display = 'none'
+            document.getElementById('conta').style.display = 'none'
+            document.getElementById('pix').style.display = 'none'
+        }
+    }
+
+    function btnSalvar() {
+
+        const TipoBancarioValor = document.getElementById("TipoBancario").value;
+        if (TipoBancarioValor == 0) {
+            const txtAgencia = document.getElementById("Agencia").value;
+            const txtConta = document.getElementById("Conta").value;
+            const txtTipoConta = document.getElementById("TipoConta").value;
+
+            if (txtAgencia != "" && txtConta != "" && txtTipoConta != "") {
+                console.log("OK");
+
+            } else {
+                console.log("Preencha Merdinha");
+                document.getElementById("spanAgencia").style.display = "block";
+
+                document.getElementById("spanAgencia").style.display = "red";
+                document.getElementById("spanAgencia").style.display = "block";
+            }
+
+        }
+    }
+</script>
